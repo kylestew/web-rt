@@ -1,9 +1,10 @@
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
-import writeColor from "./lib/color.js";
+import PixelCanvas from "./lib/pixel_canvas";
 import { vec3, color, dot } from "./lib/vec3.js";
 import ray from "./lib/ray.js";
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let pixels = PixelCanvas(ctx);
 
 const image_width = canvas.width;
 const image_height = canvas.height;
@@ -41,10 +42,8 @@ function rayColor(r) {
 }
 
 var frameCount = 0;
-const maxFrames = 10000;
-function drawSome() {
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const data = imageData.data;
+const maxFrames = 1000;
+function render() {
   for (var i = 0; i < 2000; ++i) {
     const u = Math.random();
     const v = Math.random();
@@ -53,15 +52,11 @@ function drawSome() {
     );
     const r = ray.create(origin, direction);
     const color = rayColor(r);
-
-    const col = parseInt(u * (image_width - 1));
-    const row = parseInt(v * (image_height - 1));
-    const idx = ((image_height - row) * image_width + col) * 4;
-    writeColor(data, idx, color);
+    pixels.write(u, v, color);
   }
-  ctx.putImageData(imageData, 0, 0);
+  pixels.display();
 
   frameCount++;
-  if (frameCount < maxFrames) requestAnimationFrame(drawSome);
+  if (frameCount < maxFrames) requestAnimationFrame(render);
 }
-requestAnimationFrame(drawSome);
+requestAnimationFrame(render);
