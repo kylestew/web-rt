@@ -12,6 +12,7 @@ let pixels = PixelCanvas(ctx);
 const imageWidth = canvas.width;
 const imageHeight = canvas.height;
 const aspectRatio = imageWidth / imageHeight;
+const samplesPerPixel = 16;
 
 // World
 let world = HittableList();
@@ -37,22 +38,30 @@ function rayColor(ray, world) {
 }
 
 /*
- * Progressively render scene by randomly scattering rays
- * TODO: make this smarter (i.e. when are enough rays scattered?)
+ * Scan render scene
  */
-var frameCount = 0;
-const maxFrames = 400;
+let currentLine = 0;
 function render() {
-  for (var i = 0; i < 4000; ++i) {
-    const u = Math.random();
-    const v = Math.random();
-    const r = cam.getRay(u, v);
-    const color = rayColor(r, world);
-    pixels.write(u, v, color);
-  }
-  pixels.display();
+  for (let i = 0; i < imageWidth; ++i) {
+    const u = i / imageWidth;
+    const v = currentLine / imageHeight;
+    let pixel = color(0, 0, 0);
+    for (let s = 0; s < samplesPerPixel; ++s) {
+      const su = u + Math.random() / imageWidth;
+      const sv = v + Math.random() / imageHeight;
 
-  frameCount++;
-  if (frameCount < maxFrames) requestAnimationFrame(render);
+      const r = cam.getRay(su, sv);
+      // add up all samples
+      pixel = pixel.add(rayColor(r, world));
+    }
+    // divide samples back down to color range
+    pixel = pixel.divScalar(samplesPerPixel);
+
+    pixels.write(u, v, pixel);
+  }
+
+  pixels.display();
+  currentLine++;
+  if (currentLine < imageHeight) requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
