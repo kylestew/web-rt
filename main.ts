@@ -1,5 +1,5 @@
-import { ImageCanvas } from './lib/image_canvas.js'
-// import { Vec3, Color } from "./lib/vec3.js";
+import { ImageCanvas } from './lib/image_canvas'
+import { Color } from './lib/color'
 // import { HittableList } from "./lib/hittable.js";
 // import Camera from "./lib/camera.js";
 // import Sphere from "./lib/sphere.js";
@@ -19,7 +19,7 @@ for (let j = 0; j < image.height; j++) {
         let g = j / (image.height - 1)
         let b = 0.0
 
-        image.write(i, j, [r, g, b])
+        image.write(i, j, new Color(r, g, b))
     }
 }
 

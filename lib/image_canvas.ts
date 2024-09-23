@@ -1,7 +1,7 @@
 /*
  * All color values are in the range 0.0 to 1.0
  */
-type Color = [number, number, number]
+import { Color } from './color'
 
 function ImageCanvas(canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d')
@@ -17,12 +17,7 @@ function ImageCanvas(canvas: HTMLCanvasElement) {
 
         write: function (x: number, y: number, color: Color) {
             const idx = x * 4 + y * this.width * 4
-
-            const img = this.imageData.data
-            img[idx + 0] = Math.min(Math.max(color[0] * 255.99, 0), 255)
-            img[idx + 1] = Math.min(Math.max(color[1] * 255.99, 0), 255)
-            img[idx + 2] = Math.min(Math.max(color[2] * 255.99, 0), 255)
-            img[idx + 3] = 255
+            color.write(this.imageData, idx)
         },
 
         display: function () {
