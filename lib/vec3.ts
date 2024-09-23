@@ -24,19 +24,19 @@ class Vec3 {
         return this.data[2]
     }
 
-    //   add(b) {
-    //     return new Vec3(this.x + b.x, this.y + b.y, this.z + b.z);
-    //   }
-    //   sub(b) {
-    //     return new Vec3(this.x - b.x, this.y - b.y, this.z - b.z);
-    //   }
+    add(b: Vec3) {
+        return new Vec3(this.x + b.x, this.y + b.y, this.z + b.z)
+    }
+    sub(b: Vec3) {
+        return new Vec3(this.x - b.x, this.y - b.y, this.z - b.z)
+    }
 
-    //   mulScalar(k) {
-    //     return new Vec3(this.x * k, this.y * k, this.z * k);
-    //   }
-    //   divScalar(k) {
-    //     return new Vec3(this.x / k, this.y / k, this.z / k);
-    //   }
+    mulScalar(k: number) {
+        return new Vec3(this.x * k, this.y * k, this.z * k)
+    }
+    divScalar(k: number) {
+        return new Vec3(this.x / k, this.y / k, this.z / k)
+    }
 
     //   lengthSquared() {
     //     return this.x * this.x + this.y * this.y + this.z * this.z;
